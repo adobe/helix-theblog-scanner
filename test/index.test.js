@@ -15,16 +15,20 @@
 'use strict';
 
 const assert = require('assert');
-const index = require('../src/index.js').main;
+const index = require('../src/index.js');
+
+require('dotenv').config();
 
 describe('Index Tests', () => {
-  it('index function is present', async () => {
-    const result = await index({});
-    assert.deepEqual(result, { body: 'Hello, world.' });
-  });
-
-  it('index function returns an object', async () => {
-    const result = await index();
-    assert.equal(typeof result, 'object');
+  it('index with url', async () => {
+    const result = await index.main({
+      AZURE_ONEDRIVE_CLIENT_ID: process.env.AZURE_ONEDRIVE_CLIENT_ID,
+      AZURE_ONEDRIVE_CLIENT_SECRET: process.env.AZURE_ONEDRIVE_CLIENT_SECRET,
+      AZURE_ONEDRIVE_REFRESH_TOKEN: process.env.AZURE_ONEDRIVE_REFRESH_TOKEN,
+      AZURE_ONEDRIVE_SHARED_LINK: process.env.AZURE_ONEDRIVE_SHARED_LINK,
+      OPENWHISK_API_KEY: process.env.OPENWHISK_API_KEY,
+      OPENWHISK_API_HOST: process.env.OPENWHISK_API_HOST,
+    });
+    assert.deepEqual(result, { body: 'Successfully scanned https://theblog.adobe.com' });
   });
 });
