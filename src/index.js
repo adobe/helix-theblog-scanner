@@ -24,7 +24,7 @@ const OneDriveHandler = require('./handlers/OneDriveHandler');
 const IMPORTER_ACTION = 'helix-services-private/helix-theblog-importer@1.6.0';
 
 const SITE = 'https://theblog.adobe.com';
-const URLS_CSV = '/urls.csv';
+const URLS_CSV = '/importer/urls.csv';
 
 async function doScan(opts, url, scanned, doImport, logger) {
   if (doImport) {
