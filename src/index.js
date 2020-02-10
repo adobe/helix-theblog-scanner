@@ -16,15 +16,15 @@ const { epsagon } = require('@adobe/helix-epsagon');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const openwhisk = require('openwhisk');
-const parse = require('csv-parse/lib/sync');
 
-const FSHandler = require('./handlers/FSHandler');
-const OneDriveHandler = require('./handlers/OneDriveHandler');
+const ExcelHandler = require('./handlers/ExcelHandler');
 
-const IMPORTER_ACTION = 'helix-services-private/helix-theblog-importer@1.6.0';
+const IMPORTER_ACTION = 'helix-services-private/helix-theblog-importer@1.7.0';
 
 const SITE = 'https://theblog.adobe.com';
-const URLS_CSV = '/importer/urls.csv';
+const URLS_XLSX = '/admin/importer/urls.xlsx';
+const URLS_XLSX_WORKSHEET = 'urls';
+const URLS_XLSX_TABLE = 'listOfURLS';
 
 async function doScan(opts, url, scanned, doImport, logger) {
   if (doImport) {
@@ -79,19 +79,16 @@ async function main(params = {}) {
     AZURE_ONEDRIVE_CLIENT_SECRET: oneDriveClientSecret,
     AZURE_ONEDRIVE_REFRESH_TOKEN: oneDriveRefreshToken,
     AZURE_ONEDRIVE_SHARED_LINK: oneDriveSharedLink,
-    IMPORTER_ACTION_AUTH,
     OPENWHISK_API_KEY: owKey,
     OPENWHISK_API_HOST: owHost,
   } = params;
 
   try {
-    let handler = new FSHandler({
-      logger,
-    });
+    let excelHandler;
 
     if (oneDriveClientId && oneDriveClientSecret) {
       logger.info('OneDrive credentials provided - using OneDrive handler');
-      handler = new OneDriveHandler({
+      excelHandler = new ExcelHandler({
         logger,
         clientId: oneDriveClientId,
         clientSecret: oneDriveClientSecret,
@@ -99,16 +96,12 @@ async function main(params = {}) {
         sharedLink: oneDriveSharedLink,
       });
     } else {
-      logger.info('No OneDrive credentials provided - using default handler');
+      logger.info('No OneDrive credentials provided');
+      throw new Error('Missing OneDrive credentials');
     }
 
     // load urls already processed
-    const urls = await handler.get(URLS_CSV);
-    const records = parse(urls, {
-      columns: ['year', 'url', 'importDate'],
-      skip_empty_lines: true,
-      relax_column_count: true,
-    });
+    const rows = await excelHandler.getRows(URLS_XLSX, URLS_XLSX_WORKSHEET, URLS_XLSX_TABLE);
 
     let ow;
     if (owKey) {
@@ -120,9 +113,17 @@ async function main(params = {}) {
       ow = openwhisk();
     }
 
-    await doScan({
-      ow,
-    }, SITE, records.map((r) => r.url), false, logger);
+    await doScan(
+      {
+        ow,
+      },
+      SITE,
+      rows.value.map(
+        (r) => (r.values.length > 0 && r.values[0].length > 1 ? r.values[0][1] : null),
+      ),
+      false,
+      logger,
+    );
 
     logger.info('Process done!');
     return Promise.resolve({

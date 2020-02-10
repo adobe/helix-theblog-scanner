@@ -11,11 +11,8 @@
  */
 const { OneDrive } = require('@adobe/helix-onedrive-support');
 
-const HelixImporterStorageHandler = require('../generic/HelixImporterStorageHandler');
-
-class OneDriveHandler extends HelixImporterStorageHandler {
+class ExcelHandler {
   constructor(opts = {}) {
-    super(opts);
     this.logger = opts.logger || console;
     this.sharedLink = opts.sharedLink;
     this.drive = new OneDrive({
@@ -25,19 +22,35 @@ class OneDriveHandler extends HelixImporterStorageHandler {
     });
   }
 
-  async put(filePath, content) {
-    this.logger.debug(`Uploading file to OneDrive: ${filePath}`);
+  async getRows(filePath, worksheet, table) {
+    this.logger.debug(`Reading table ${table} from worksheet ${worksheet} in file: ${filePath}`);
     const rootItem = await this.drive.getDriveItemFromShareLink(this.sharedLink);
     const path = filePath.indexOf('/') === 0 ? filePath : `/${filePath}`;
-    await this.drive.uploadDriveItem(content, rootItem, path);
+    const item = await this.drive.getDriveItem(rootItem, path);
+    const uri = `/drives/${item.parentReference.driveId}/items/${item.id}/workbook/worksheets/${worksheet}/tables/${table}/rows`;
+    const rows = await (await this.drive.getClient(false)).get(uri);
+    return rows;
   }
 
-  async get(filePath) {
-    this.logger.debug(`Reading file from OneDrive: ${filePath}`);
+  async addRow(filePath, worksheet, table, values) {
+    this.logger.debug(`Adding row to file: ${filePath}`);
     const rootItem = await this.drive.getDriveItemFromShareLink(this.sharedLink);
-    const driveItem = await this.drive.getDriveItem(rootItem, filePath);
-    return this.drive.downloadDriveItem(driveItem);
+    const path = filePath.indexOf('/') === 0 ? filePath : `/${filePath}`;
+    const item = await this.drive.getDriveItem(rootItem, path);
+    const uri = `/drives/${item.parentReference.driveId}/items/${item.id}/workbook/worksheets/${worksheet}/tables/${table}/rows/add`;
+    const client = await this.drive.getClient();
+    const response = await client({
+      uri,
+      method: 'POST',
+      body: {
+        index: null,
+        values,
+      },
+      json: true,
+    });
+    this.logger.debug(response);
+    return response;
   }
 }
 
-module.exports = OneDriveHandler;
+module.exports = ExcelHandler;

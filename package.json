@@ -45,7 +45,6 @@
     "@adobe/openwhisk-action-utils": "4.1.0",
     "axios": "^0.19.2",
     "cheerio": "^1.0.0-rc.3",
-    "csv-parse": "^4.8.5",
     "dotenv": "^8.2.0",
     "fs-extra": "^8.1.0",
     "openwhisk": "^3.20.0"
