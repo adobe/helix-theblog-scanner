@@ -31,16 +31,19 @@ async function doScan(opts, url, scanned, doImport, logger) {
     logger.info(`Running import for ${url}`);
     // async is not possible yet
     // because of onedrive resources not being accessible to many time in parallel
-    await opts.ow.actions.invoke({
-      name: IMPORTER_ACTION,
-      blocking: true,
-      result: false,
-      params: {
-        url,
-      },
-    }).catch((error) => {
+    try {
+      const result = await opts.ow.actions.invoke({
+        name: IMPORTER_ACTION,
+        blocking: true,
+        result: true,
+        params: {
+          url,
+        },
+      });
+      logger.debug('Import action response: ', result);
+    } catch (error) {
       logger.error(`Error processing importer to ${url}: ${error.message}`);
-    });
+    }
   }
 
   logger.info(`Scanning ${url}`);
@@ -56,7 +59,7 @@ async function doScan(opts, url, scanned, doImport, logger) {
   // try to find links
   const links = $('body').find('a.article-link, a.prev, a.next');
   logger.debug(`Number of links found ${links.length}`);
-  for (let i = 0; i < links.length; i += 1) {
+  for (let i = links.length - 1; i >= 0; i -= 1) {
     const link = links[i];
     const linkUrl = link.attribs.href;
     // scan links but not already scanned and outside of domain
