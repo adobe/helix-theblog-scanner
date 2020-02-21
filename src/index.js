@@ -13,7 +13,7 @@ const { wrap } = require('@adobe/openwhisk-action-utils');
 const { logger: oLogger } = require('@adobe/openwhisk-action-logger');
 const { wrap: status } = require('@adobe/helix-status');
 const { epsagon } = require('@adobe/helix-epsagon');
-const axios = require('axios');
+const rp = require('request-promise-native');
 const cheerio = require('cheerio');
 const openwhisk = require('openwhisk');
 
@@ -49,12 +49,12 @@ async function doScan(opts, url, scanned, doImport, logger) {
   logger.info(`Scanning ${url}`);
   scanned.push(url);
 
-  const response = await axios({
-    url,
-    maxRedirects: 0,
+  const html = await rp({
+    uri: url,
+    timeout: 60000,
   });
 
-  const $ = cheerio.load(response.data);
+  const $ = cheerio.load(html);
 
   // try to find links
   const links = $('body').find('a.article-link, a.prev, a.next');
