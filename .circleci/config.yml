@@ -57,7 +57,7 @@ jobs:
           name: revert changes to package-lock.json
           command: git checkout -- package-lock.json
       - run: 
-          name: Config wsk
+          name: Config WSK
           command: echo -e "APIHOST=https://adobeioruntime.net\nNAMESPACE=helix-clients\nAUTH=$WSK_AUTH\n" > ~/.wskprops
       - helix-post-deploy/config-env
       - run:
