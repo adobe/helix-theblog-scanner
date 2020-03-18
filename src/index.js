@@ -19,7 +19,7 @@ const openwhisk = require('openwhisk');
 
 const ExcelHandler = require('./handlers/ExcelHandler');
 
-const IMPORTER_ACTION = 'helix-services-private/helix-theblog-importer@1.7.0';
+const IMPORTER_ACTION = 'helix-services/helix-theblog-importer@latest';
 
 const SITE = 'https://theblog.adobe.com';
 const URLS_XLSX = '/importer/urls.xlsx';
