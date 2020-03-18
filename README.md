@@ -34,7 +34,7 @@ wsk trigger create five-mins-trigger --feed /whisk.system/alarms/alarm --param c
 Link the trigger to a rule: 
 
 ```bash
- wsk rule update five-mins-scan five-mins-trigger helix-services-private/helix-theblog-scanner@1.4.9
+wsk rule update five-mins-scan five-mins-trigger helix-services/helix-theblog-scanner@latest
 ```
 
 ### Required env variables:
