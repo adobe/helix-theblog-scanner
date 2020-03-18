@@ -72,8 +72,6 @@ async function doScan(opts, url, scanned, doImport, logger) {
 
 /**
  * This is the main function
- * @param {string} name name of the person to greet
- * @returns {object} a greeting
  */
 async function main(params = {}) {
   const {
@@ -133,8 +131,10 @@ async function main(params = {}) {
       body: `Successfully scanned ${SITE}`,
     });
   } catch (error) {
-    logger.error(error.message);
-    throw error;
+    logger.info(`An error occured during the scan: ${error.message}. Error has been caught and next scan might solve the issue.`);
+    return Promise.resolve({
+      body: `Error during the scan: ${error.message}`,
+    });
   }
 }
 

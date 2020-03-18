@@ -21,7 +21,7 @@
     "name": "helix-services-private/helix-theblog-scanner@${version}",
     "linksPackage": "helix-services",
     "params": {
-      "LOG_LEVEL": "debug"
+      "LOG_LEVEL": "info"
     },
     "params-file": [
       ".env"
