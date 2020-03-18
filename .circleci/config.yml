@@ -56,7 +56,9 @@ jobs:
       - run:
           name: revert changes to package-lock.json
           command: git checkout -- package-lock.json
-      - helix-post-deploy/config-wsk
+      - run: 
+          name: Config wsk
+          command: echo -e "APIHOST=https://adobeioruntime.net\nNAMESPACE=helix-clients\nAUTH=$WSK_AUTH\n" > ~/.wskprops
       - helix-post-deploy/config-env
       - run:
           name: Semantic Release
@@ -72,10 +74,10 @@ jobs:
       # uncomment and adjust to enable monitoring
       # see https://circleci.com/orbs/registry/orb/adobe/helix-post-deploy
       # for more available parameters
-      - helix-post-deploy/monitoring:
-          statuspage_name: Helix TheBlog Scanner
-          statuspage_group: Development
-          newrelic_group_policy: Development Repeated Failure
+      # - helix-post-deploy/monitoring:
+      #     statuspage_name: Helix TheBlog Scanner
+      #     statuspage_group: Development
+      #     newrelic_group_policy: Development Repeated Failure
 
   branch-deploy:
     executor: node10
@@ -84,7 +86,9 @@ jobs:
       - run:
           name: revert changes to package-lock.json
           command: git checkout -- package-lock.json
-      - helix-post-deploy/config-wsk
+      - run: 
+          name: Config wsk
+          command: echo -e "APIHOST=https://adobeioruntime.net\nNAMESPACE=helix-clients\nAUTH=$WSK_AUTH\n" > ~/.wskprops
       - run:
           name: Branch Deployment
           command: npm run deploy-ci
