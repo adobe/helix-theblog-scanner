@@ -58,7 +58,7 @@ jobs:
           command: git checkout -- package-lock.json
       - run: 
           name: Config WSK
-          command: echo -e "APIHOST=https://adobeioruntime.net\nNAMESPACE=helix-clients\nAUTH=$WSK_AUTH\n" > ~/.wskprops
+          command: echo -e "APIHOST=https://adobeioruntime.net\nNAMESPACE=helix-clients\nAUTH=$OPENWHISK_API_KEY\n" > ~/.wskprops
       - helix-post-deploy/config-env
       - run:
           name: Semantic Release
@@ -68,9 +68,6 @@ jobs:
           command: npm run test-postdeploy
       - store_test_results:
           path: junit
-      - run:
-          name: Debug namespace
-          command: wsk namespace get
       - run:
           name: Link Sequences
           command: npm run deploy-sequences
@@ -91,7 +88,7 @@ jobs:
           command: git checkout -- package-lock.json
       - run: 
           name: Config wsk
-          command: echo -e "APIHOST=https://adobeioruntime.net\nNAMESPACE=helix-clients\nAUTH=$WSK_AUTH\n" > ~/.wskprops
+          command: echo -e "APIHOST=https://adobeioruntime.net\nNAMESPACE=helix-clients\nAUTH=$OPENWHISK_API_KEY\n" > ~/.wskprops
       - run:
           name: Branch Deployment
           command: npm run deploy-ci
