@@ -1,6 +1,6 @@
 # Helix - TheBlog Scanner
 
-TheBlog should run periodically (via an [Openwhisk trigger](https://github.com/apache/openwhisk/blob/master/docs/triggers_rules.md)) and scan theblog.adobe.com to determine if new blog entries have been created. For each new blog entry detected, it invokes [TheBlog Importer](https://github.com/adobe/helix-theblog-importer).
+TheBlog should run periodically (via an [Openwhisk trigger](https://github.com/apache/openwhisk/blob/master/docs/triggers_rules.md)) and scan [theblog.adobe.com](https://theblog.adobe.com) to determine if new blog entries have been created. For each new blog entry detected, it invokes [TheBlog Importer](https://github.com/adobe/helix-theblog-importer).
 
 The execution flow looks like this:
 - fetch the content of the theblog.adobe.com homepage
