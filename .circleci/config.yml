@@ -65,9 +65,10 @@ jobs:
           command: npm run test-postdeploy
       - store_test_results:
           path: junit
+      # the env is to override the WSK_AUTH env variable provided by the Project Helix context
       - run:
           name: Link Sequences
-          command: npm run deploy-sequences
+          command: env WSK_AUTH=$OPENWHISK_API_KEY npm run deploy-sequences
       # uncomment and adjust to enable monitoring
       # see https://circleci.com/orbs/registry/orb/adobe/helix-post-deploy
       # for more available parameters
@@ -98,12 +99,14 @@ workflows:
     jobs:
       - build
       - branch-deploy:
+          context: Project Helix
           requires:
             - build
           filters:
             branches:
               ignore: master
       - semantic-release:
+          context: Project Helix
           requires:
             - build
           filters:
