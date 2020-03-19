@@ -66,9 +66,6 @@ jobs:
       - store_test_results:
           path: junit
       - run:
-          name: Configure OpenWhisk
-          command: echo -e "APIHOST=https://runtime.adobe.io\nNAMESPACE=helix-clients\nAUTH=$OPENWHISK_API_KEY\n" > ~/.wskprops
-      - run:
           name: Link Sequences
           command: npm run deploy-sequences
       # uncomment and adjust to enable monitoring
