@@ -34,7 +34,7 @@ wsk trigger create five-mins-trigger --feed /whisk.system/alarms/alarm --param c
 Link the trigger to a rule: 
 
 ```bash
-wsk rule update five-mins-scan five-mins-trigger helix-services/helix-theblog-scanner@latest
+wsk rule update five-mins-scan five-mins-trigger helix-theblog/helix-theblog-scanner@latest
 ```
 
 ### Required env variables:
@@ -65,4 +65,4 @@ Coralogix credentials to log:
 
 Deploying Helix Service requires the `wsk` command line client, authenticated to a namespace of your choice. For Project Helix, we use the `helix` namespace.
 
-All commits to master that pass the testing will be deployed automatically. All commits to branches that will pass the testing will get commited as `/helix-services/helix-theblog-scanner@ci<num>` and tagged with the CI build number.
+All commits to master that pass the testing will be deployed automatically. All commits to branches that will pass the testing will get commited as `/helix-theblog/helix-theblog-scanner@ci<num>` and tagged with the CI build number.

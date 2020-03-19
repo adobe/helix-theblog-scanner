@@ -18,8 +18,8 @@
     "deploy-ci": "wsk-builder --web-export false -v --deploy --pkgVersion=ci$CIRCLE_BUILD_NUM -l ci -t 3600000"
   },
   "wsk": {
-    "name": "helix-services-private/helix-theblog-scanner@${version}",
-    "linksPackage": "helix-services",
+    "name": "helix-theblog/helix-theblog-scanner@${version}",
+    "linksPackage": "helix-theblog",
     "params": {
       "LOG_LEVEL": "info"
     },
