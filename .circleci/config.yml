@@ -2,7 +2,7 @@ version: 2.1
 executors:
   node10:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:10-buster
         environment:
           NPM_CONFIG_PREFIX: "~/.npm-global"
     working_directory: ~/repo
@@ -65,6 +65,9 @@ jobs:
           command: npm run test-postdeploy
       - store_test_results:
           path: junit
+      - run:
+          name: Configure OpenWhisk
+          command: echo -e "APIHOST=https://runtime.adobe.io\nNAMESPACE=helix-clients\nAUTH=$OPENWHISK_API_KEY\n" > ~/.wskprops
       - run:
           name: Link Sequences
           command: npm run deploy-sequences
