@@ -65,6 +65,10 @@ jobs:
           command: npm run test-postdeploy
       - store_test_results:
           path: junit
+      # temp fix, CircleCI does not want to update the env variable!
+      - run:
+          name: Tempfix
+          command: export WSK_AUTH=$OPENWHISK_API_KEY
       - run:
           name: Link Sequences
           command: npm run deploy-sequences
