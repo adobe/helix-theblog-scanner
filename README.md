@@ -5,8 +5,10 @@ TheBlog should run periodically (via an [Openwhisk trigger](https://github.com/a
 The execution flow looks like this:
 - fetch the content of the theblog.adobe.com homepage
 - compute the list of links on the page
-- for each link, check if it present in a list of already processed urls stored in a OneDrive XLSX file (/importer/urls.xlsx)
+- for each link, check if it present in a list of already processed urls stored in a OneDrive XLSX file (`/importer/urls.xlsx`)
 - if not present, invoke [helix-theblog-importer action](https://github.com/adobe/helix-theblog-importer)
+
+It happens sometimes that the post entries published on [theblog.adobe.com](https://theblog.adobe.com) are corrupted and get fixed later. The scanner may have already detected and triggered the import of the corrupted version. To re-trigger the import, simply remove the entry from the `/importer/urls.xlsx` file (delete row): if the blog entry is still visible on the homepage, it will be re-imported. If not, then you need to manual trigger the import: change the URL and run the test https://github.com/adobe/helix-theblog-importer/blob/master/test/index.test.js#L24.
 
 ## Status
 [![CircleCI](https://img.shields.io/circleci/project/github/adobe/helix-theblog-scanner.svg)](https://circleci.com/gh/adobe/helix-theblog-scanner)
