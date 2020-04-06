@@ -1,3 +1,10 @@
+# 1.0.0 (2020-04-06)
+
+
+### Bug Fixes
+
+* **ci:** add missing env ([9f46fb0](https://github.com/kptdobe/helix-theblog-scanner/commit/9f46fb05a414021737711c3c2e3d9f38fd310ad9))
+
 ## [1.6.10](https://github.com/adobe/helix-service/compare/v1.6.9...v1.6.10) (2020-02-03)
 
 
