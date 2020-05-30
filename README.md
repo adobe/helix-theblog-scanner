@@ -15,7 +15,7 @@ It happens sometimes that the post entries published on [theblog.adobe.com](http
 [![GitHub license](https://img.shields.io/github/license/adobe/helix-theblog-scanner.svg)](https://github.com/adobe/helix-theblog-scanner/blob/master/LICENSE.txt)
 [![GitHub issues](https://img.shields.io/github/issues/adobe/helix-theblog-scanner.svg)](https://github.com/adobe/helix-theblog-scanner/issues)
 [![LGTM Code Quality Grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/adobe/helix-theblog-scanner.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/adobe/helix-theblog-scanner)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![Greenkeeper badge](https://badges.greenkeeper.io/adobe/helix-theblog-scanner.svg)](https://greenkeeper.io/)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) 
 
 ## Setup
 
