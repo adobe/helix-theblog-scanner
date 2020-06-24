@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.0.1...v1.1.0) (2020-06-24)
+
+
+### Features
+
+* **scan:** use IP instead of domain name ([dd129ea](https://github.com/kptdobe/helix-theblog-scanner/commit/dd129ea42961042e19ffbb9404e8c48b9ae768db))
+
 ## [1.0.1](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.0.0...v1.0.1) (2020-05-11)
 
 
