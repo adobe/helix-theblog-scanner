@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.1.0...v1.1.1) (2020-06-26)
+
+
+### Bug Fixes
+
+* **import:** urls are listed with IP in urls.xlsx ([#8](https://github.com/kptdobe/helix-theblog-scanner/issues/8)) ([4aaaccf](https://github.com/kptdobe/helix-theblog-scanner/commit/4aaaccfe5c9b08443b1108aaed44fa49e11a3ab1))
+
 # [1.1.0](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.0.1...v1.1.0) (2020-06-24)
 
 
