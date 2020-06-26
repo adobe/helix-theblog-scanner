@@ -16,6 +16,7 @@ const { epsagon } = require('@adobe/helix-epsagon');
 const rp = require('request-promise-native');
 const cheerio = require('cheerio');
 const openwhisk = require('openwhisk');
+const moment = require('moment');
 
 const ExcelHandler = require('./handlers/ExcelHandler');
 
@@ -34,46 +35,85 @@ function getIPURL(url) {
 }
 
 async function doScan(opts, url, scanned, doImport, logger) {
-  if (doImport) {
-    logger.info(`Running import for ${url}`);
-    // async is not possible yet
-    // because of onedrive resources not being accessible to many time in parallel
-    try {
-      const result = await opts.ow.actions.invoke({
-        name: IMPORTER_ACTION,
-        blocking: true,
-        result: true,
-        params: {
-          url,
-        },
-      });
-      logger.debug('Import action response: ', result);
-    } catch (error) {
-      logger.error(`Error processing importer to ${url}: ${error.message}`);
+  const scannedIndex = scanned.findIndex((item) => item.url === url);
+  // is already in the list of scanned
+  const alreadyScanned = scannedIndex !== -1;
+  // has already been processed by the current import
+  const alreadyChecked = alreadyScanned && scanned[scannedIndex].checked;
+
+  if (!alreadyChecked) {
+    logger.info(`Scanning ${url}`);
+
+    const html = await rp({
+      uri: getIPURL(url),
+      timeout: 60000,
+      rejectUnauthorized: false,
+    });
+
+    const $ = cheerio.load(html);
+
+    let lastModifiedDate;
+    const lastModifiedMeta = $('[property="article:modified_time"]').attr('content');
+    if (lastModifiedMeta) {
+      lastModifiedDate = moment(lastModifiedMeta);
     }
-  }
 
-  logger.info(`Scanning ${url}`);
-  scanned.push(url);
+    const modifiedSinceLastScanned = alreadyScanned
+      && lastModifiedDate
+      && lastModifiedDate.isAfter(scanned[scannedIndex].lastImportDate);
 
-  const html = await rp({
-    uri: getIPURL(url),
-    timeout: 60000,
-    rejectUnauthorized: false,
-  });
+    if (doImport && (!alreadyScanned || modifiedSinceLastScanned)) {
+      if (modifiedSinceLastScanned) {
+        logger.info(`Re-importing ${url} because it has been modified.`);
+      } else {
+        logger.info(`Importing ${url}: new entry found.`);
+      }
+      // async is not possible yet
+      // because of onedrive resources not being accessible to many time in parallel
+      try {
+        const result = await opts.ow.actions.invoke({
+          name: IMPORTER_ACTION,
+          blocking: true,
+          result: true,
+          params: {
+            url,
+          },
+        });
+        logger.debug('Import action response: ', result);
+      } catch (error) {
+        logger.error(`Error processing importer to ${url}: ${error.message}`);
+      }
+    }
 
-  const $ = cheerio.load(html);
+    if (alreadyScanned) {
+      if (modifiedSinceLastScanned) {
+        // eslint-disable-next-line no-param-reassign
+        scanned[scannedIndex].lastImportDate = new Date();
+      }
+      // eslint-disable-next-line no-param-reassign
+      scanned[scannedIndex].checked = true;
+    } else {
+      scanned.push({
+        id: 'new',
+        url,
+        lastImportDate: new Date(),
+        checked: true,
+      });
+    }
 
-  // try to find links
-  const links = $('body').find('a.article-link, a.prev, a.next');
-  logger.debug(`Number of links found ${links.length}`);
-  for (let i = links.length - 1; i >= 0; i -= 1) {
-    const link = links[i];
-    const linkUrl = link.attribs.href;
-    // scan links but not already scanned and outside of domain
-    if (scanned.indexOf(linkUrl) === -1 && linkUrl.indexOf('theblog.adobe.com') !== -1) {
-      // eslint-disable-next-line no-await-in-loop
-      await doScan(opts, linkUrl, scanned, true, logger);
+    if ((!alreadyScanned || modifiedSinceLastScanned)) {
+      // try to find links
+      const links = $('body').find('a.article-link, a.prev, a.next');
+      logger.debug(`Number of links found ${links.length}`);
+      for (let i = links.length - 1; i >= 0; i -= 1) {
+        const link = links[i];
+        const linkUrl = link.attribs.href;
+        // scan links but not already scanned and outside of domain
+        if (linkUrl.indexOf('theblog.adobe.com') !== -1) {
+          // eslint-disable-next-line no-await-in-loop
+          await doScan(opts, linkUrl, scanned, true, logger);
+        }
+      }
     }
   }
 }
@@ -122,14 +162,31 @@ async function main(params = {}) {
       ow = openwhisk();
     }
 
+    const read = rows.value.map(
+      (r) => (r.values.length > 0 && r.values[0].length > 2
+        ? { id: r.values[0][0], url: r.values[0][1], lastImportDate: new Date(r.values[0][2]) }
+        : null),
+    );
+
+    // remove duplicates to keep on the latest ones
+    const scanned = [];
+    read.forEach((scan) => {
+      const foundIndex = scanned.findIndex((s) => s.url === scan.url);
+      if (foundIndex !== -1) {
+        if (moment(scan.lastImportDate).isAfter(scanned[foundIndex].lastImportDate)) {
+          scanned[foundIndex].lastImportDate = scan.lastImportDate;
+        }
+      } else {
+        scanned.push(scan);
+      }
+    });
+
     await doScan(
       {
         ow,
       },
       SITE,
-      rows.value.map(
-        (r) => (r.values.length > 0 && r.values[0].length > 1 ? r.values[0][1] : null),
-      ),
+      scanned,
       false,
       logger,
     );
