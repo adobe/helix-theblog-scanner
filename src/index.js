@@ -44,7 +44,7 @@ async function doScan(opts, url, scanned, doImport, logger) {
         blocking: true,
         result: true,
         params: {
-          url: getIPURL(url),
+          url,
         },
       });
       logger.debug('Import action response: ', result);
