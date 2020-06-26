@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.1.2...v1.2.0) (2020-06-26)
+
+
+### Features
+
+* **import:** re-import modified ([d010941](https://github.com/kptdobe/helix-theblog-scanner/commit/d0109411ff9cf6851b43b57a99930fc23f93a064))
+
 ## [1.1.2](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.1.1...v1.1.2) (2020-06-26)
 
 
