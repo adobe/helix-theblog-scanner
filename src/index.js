@@ -21,16 +21,16 @@ const ExcelHandler = require('./handlers/ExcelHandler');
 
 const IMPORTER_ACTION = 'helix-theblog/helix-theblog-importer@latest';
 
-const DOMAIN = 'theblog.adobe.com';
+const HOST = 'theblog.adobe.com';
 const IP = '192.40.113.16';
-const SITE = `https://${DOMAIN}`;
+const SITE = `https://${HOST}`;
 
 const URLS_XLSX = '/importer/urls.xlsx';
 const URLS_XLSX_WORKSHEET = 'urls';
 const URLS_XLSX_TABLE = 'listOfURLS';
 
 function getIPURL(url) {
-  return url.replace(DOMAIN, IP);
+  return url.replace(HOST, IP);
 }
 
 async function doScan(opts, url, scanned, doImport, logger) {
@@ -73,7 +73,7 @@ async function doScan(opts, url, scanned, doImport, logger) {
     // scan links but not already scanned and outside of domain
     if (scanned.indexOf(linkUrl) === -1 && linkUrl.indexOf('theblog.adobe.com') !== -1) {
       // eslint-disable-next-line no-await-in-loop
-      await doScan(opts, getIPURL(linkUrl), scanned, true, logger);
+      await doScan(opts, linkUrl, scanned, true, logger);
     }
   }
 }
