@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.1.1...v1.1.2) (2020-06-26)
+
+
+### Bug Fixes
+
+* **import:** use host instead of IP ([8a509ae](https://github.com/kptdobe/helix-theblog-scanner/commit/8a509aebed5756c7f657808278d4b1a5fec43b0e))
+
 ## [1.1.1](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.1.0...v1.1.1) (2020-06-26)
 
 
