@@ -44,11 +44,17 @@ async function doScan(opts, url, scanned, doImport, logger) {
   if (!alreadyChecked) {
     logger.info(`Scanning ${url}`);
 
-    const html = await rp({
-      uri: getIPURL(url),
-      timeout: 60000,
-      rejectUnauthorized: false,
-    });
+    let html;
+    try {
+      html = await rp({
+        uri: getIPURL(url),
+        timeout: 60000,
+        rejectUnauthorized: false,
+      });
+    } catch (error) {
+      logger.error(`Error while downloading page ${url}: ${error.message}`);
+      return;
+    }
 
     const $ = cheerio.load(html);
 
@@ -105,7 +111,7 @@ async function doScan(opts, url, scanned, doImport, logger) {
       // try to find links
       const links = $('body').find('a.article-link, a.prev, a.next');
       logger.debug(`Number of links found ${links.length}`);
-      for (let i = links.length - 1; i >= 0; i -= 1) {
+      for (let i = 0; i < links.length; i += 1) {
         const link = links[i];
         const linkUrl = link.attribs.href;
         // scan links but not already scanned and outside of domain
