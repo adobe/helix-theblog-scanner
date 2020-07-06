@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.2.0...v1.3.0) (2020-07-06)
+
+
+### Features
+
+* **scan:** catch errors ([#12](https://github.com/kptdobe/helix-theblog-scanner/issues/12)) ([a5b2c7a](https://github.com/kptdobe/helix-theblog-scanner/commit/a5b2c7a6554a9247413711946464c7d9d1a8db3e))
+
 # [1.2.0](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.1.2...v1.2.0) (2020-06-26)
 
 
