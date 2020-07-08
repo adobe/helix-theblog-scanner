@@ -52,7 +52,7 @@ async function doScan(opts, url, scanned, doImport, logger) {
         rejectUnauthorized: false,
       });
     } catch (error) {
-      logger.error(`Error while downloading page ${url}: ${error.message}`);
+      logger.warning(`Error while downloading page ${url}: ${error.message}`);
       return;
     }
 
