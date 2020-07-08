@@ -1,6 +1,6 @@
 {
   "name": "@adobe/helix-theblog-scanner",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "private": true,
   "description": "Helix TheBlog Scanner",
   "main": "src/index.js",
