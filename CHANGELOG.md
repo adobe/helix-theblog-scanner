@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.3.0...v1.4.0) (2020-07-08)
+
+
+### Features
+
+* **logs:** reduce log level for non critical error ([75c3bcc](https://github.com/kptdobe/helix-theblog-scanner/commit/75c3bcc1616a9c14b5b7e27c01b521f72666cfdf))
+
 # [1.3.0](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.2.0...v1.3.0) (2020-07-06)
 
 
