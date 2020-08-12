@@ -50,6 +50,9 @@ async function doScan(opts, url, scanned, doImport, logger) {
         uri: getIPURL(url),
         timeout: 60000,
         rejectUnauthorized: false,
+        headers: {
+          Host: HOST,
+        },
       });
     } catch (error) {
       logger.warn(`Error while downloading page ${url}: ${error.message}`);
