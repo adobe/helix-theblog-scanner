@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.4.1...v1.4.2) (2020-08-12)
+
+
+### Bug Fixes
+
+* **ci:** trigger a new clean release ([6b24e17](https://github.com/kptdobe/helix-theblog-scanner/commit/6b24e17140f15961f895729d1f3d9bc27beed125))
+
 ## [1.4.1](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.4.0...v1.4.1) (2020-07-10)
 
 
