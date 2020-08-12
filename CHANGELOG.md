@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.4.2...v1.5.0) (2020-08-12)
+
+
+### Features
+
+* **scan:** avoid redirect ([#16](https://github.com/kptdobe/helix-theblog-scanner/issues/16)) ([b22bbe4](https://github.com/kptdobe/helix-theblog-scanner/commit/b22bbe44ffb0b5323a7a1b9c52fc12d2ba96a128))
+
 ## [1.4.2](https://github.com/kptdobe/helix-theblog-scanner/compare/v1.4.1...v1.4.2) (2020-08-12)
 
 
